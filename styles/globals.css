@@ -2,3 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* OTSIKOT */
+h1{
+    @apply text-2xl p-2 mb-2
+}
+
+/* INPUTIT */
+input{
+    @apply border-4 border-transparent shadow-md mb-4 shadow-black rounded-md p-4 bg-themeSlate text-white;
+    outline: none;
+}
+input:focus{
+    @apply bg-slate-400;
+    border: 4px dotted #FBE0C3;
+    outline: none;
+}
+input::placeholder {
+    color: #fff; 
+}
+
+/* NAPIT */
+.tallenna{
+    @apply bg-themeYellow text-themeDark p-4 rounded-md shadow-black shadow-md hover:bg-themePeach;
+    align-self: flex-start;
+}
