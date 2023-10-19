@@ -47,7 +47,7 @@ export default function LomakeTerapiaTiedot({
                 <input  type="number" placeholder="Kesto ( min )" value={kesto} required onChange={ev => setKesto(ev.target.value)}/>
                 <p>Hinta (€):</p>
                 <input  type="number" placeholder="Hinta €" value={hinta} required onChange={ev => setHinta(ev.target.value)}/>
-                <div>
+                <div className="flex gap-4">
                 <button type="submit" className="tallenna">Tallenna</button>
                 <Link href={'/palvelut/'} className="tallenna inline-flex">Takaisin tallentamatta muutoksia</Link>
                 </div>

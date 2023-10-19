@@ -27,4 +27,12 @@ export default async function handler(req,res) {
         res.json(terapiaDoc)
 
     }
+
+    if (method==='DELETE'){
+        if(req.query?.id){
+        const id = req.query.id
+        await Terapia.deleteOne({_id:id})
+        res.json(true)
+    }
+    }
 }
