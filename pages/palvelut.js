@@ -33,7 +33,7 @@ export default function Palvelut() {
                     <tbody>
                         {palvelut.map(palvelu =>(
                          
-                                <tr key={palvelu._id} onClick={() => muokkaaKohdetta(palvelu._id)}> 
+                                <tr key={palvelu._id} onClick={() => muokkaaKohdetta(palvelu._id)} className="cursor-pointer"> 
 
                                     <td>{palvelu.terapia}</td>     
                                     <td>{palvelu.kuvaus}</td>     

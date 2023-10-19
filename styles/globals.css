@@ -23,7 +23,7 @@ input::placeholder {
 
 /* NAPIT */
 .tallenna{
-    @apply bg-themeYellow p-4 rounded-md shadow-black drop-shadow-xl hover:bg-themePeach ease-in duration-150;
+    @apply bg-themeYellow p-4 m-4 rounded-md shadow-black drop-shadow-xl hover:bg-themePeach ease-in duration-150;
     align-self: flex-start;
 }
 
