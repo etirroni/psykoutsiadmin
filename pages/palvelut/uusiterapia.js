@@ -1,6 +1,5 @@
 import Layout from "@/components/Layout";
 import LomakeTerapiaTiedot from "@/components/LomakeTerapiaTiedot";
-import Link from "next/link";
 
 export default function UusiTerapia(){
     return(

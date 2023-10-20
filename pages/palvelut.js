@@ -12,7 +12,8 @@ export default function Palvelut() {
         axios.get('/api/palvelut').then(response=>{
             setPalvelut(response.data)
         })
-    })
+    },[])
+
     function muokkaaKohdetta(id) {
         router.push('/palvelut/muokkaa/'+id)
     }

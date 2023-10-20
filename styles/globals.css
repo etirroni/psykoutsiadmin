@@ -7,18 +7,25 @@ h1{
     @apply text-2xl p-2 mb-2
 }
 
-/* INPUTIT */
+/* INPUT JA SELECT */
 input{
-    @apply border-4 border-transparent shadow-md mb-4 shadow-black rounded-md p-4 bg-themeSlate text-white;
+    @apply scale-100 border-4 border-transparent my-4 shadow-md shadow-themeSlate rounded-md p-4 bg-themeYellow ;
     outline: none;
 }
 input:focus{
-    @apply bg-slate-400;
-    border: 4px dashed #FBE0C3;
+    @apply bg-themePeach scale-y-110 p-6 ease-in duration-200 ;
     outline: none;
 }
 input::placeholder {
-    color: #fff; 
+    color: #000; 
+}
+select{
+    @apply border-4 border-transparent my-4 shadow-md shadow-themeSlate rounded-md p-4 bg-themeYellow;
+    outline: none;
+}
+select:focus{
+    @apply bg-themePeach scale-y-110 p-6 ease-in duration-200;    
+    outline: none;
 }
 
 /* NAPIT */

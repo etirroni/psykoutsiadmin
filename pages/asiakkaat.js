@@ -11,15 +11,16 @@ export default function Asiakkaat() {
     useEffect(()=>{
         axios.get('/api/asiakkaat').then(response=>{
             setAsiakkaat(response.data)
+            console.log("wazaa")
         })
-    })
+    }, [])
     function muokkaaAsiakasta(id) {
         router.push('/asiakkaat/muokkaa/'+id)
     }
     return(
        <Layout>
             <h1 className="text-themeDark text-center">Tallentamasi asiakkaat</h1>
-            <p className="text-center">Painamalla linkkiä voit tarkastella tallentamaasi asiakasta tarkemmin tai poistaa sen kokonaan.</p>
+            <p className="text-center">Klikkaamalla linkkiä voit tarkastella, muokata tai poistaa tallentamasi asiakkaan.</p>
             <div className="mb-4 p-4 overflow-y-auto">
                 <table className="w-full">
                     <thead>
