@@ -4,7 +4,10 @@
 
 /* OTSIKOT */
 h1{
-    @apply text-2xl p-2 mb-2
+    @apply text-2xl p-2 mb-2 font-semibold text-themeDark text-center
+}
+p{
+    @apply text-lg p-1 font-normal
 }
 
 /* INPUT JA SELECT */
@@ -30,25 +33,59 @@ select:focus{
 
 /* NAPIT */
 .tallenna{
-    @apply bg-themeYellow p-4 my-4 rounded-md shadow-black drop-shadow-xl hover:bg-themePeach ease-in duration-150;
-    align-self: flex-start;
+    @apply bg-themeYellow p-4 my-4 rounded-md drop-shadow-xl hover:bg-themePeach ease-in duration-150;
+   
+}
+.vihreä{
+    @apply bg-themeDark p-4 rounded-md m-4 drop-shadow-xl text-white hover:bg-themeSlate hover:scale-110 ease-in duration-150;
 }
 
 /* TAULUKOT */
-table{
+.perustable{     
     border-collapse:separate;
-    border-spacing:0 30px; 
+    border-spacing:0 15px;    
 }
-table tr td {
+.perustable tr td {
     @apply p-6  
 }
-table thead tr td {
-    @apply  border-none text-themeDark text-xl underline underline-offset-4 pb-2
+.perustable thead tr td {
+    @apply  border-none text-themeDark text-xl underline underline-offset-4 pb-2 
 }
-table tbody tr {
-    @apply bg-themeYellow  drop-shadow-xl shadow-black rounded-md hover:scale-95 hover:bg-themePeach ease-in duration-200
+.perustable tbody tr {
+    @apply bg-themeYellow drop-shadow-xl shadow-black rounded-md hover:scale-95 hover:bg-themePeach ease-in duration-200
 }
-table tbody td{
-    @apply rounded-md
+.perustable tbody td{
+    @apply rounded-md 
 } 
 
+
+/* KALENTERI */
+.kalenteri{
+    @apply flex flex-col overflow-auto border-2 p-2 border-themeDark gap-10 bg-gray-200 rounded-md;
+    height: 20vw   
+}
+.kalenteri tr{
+    @apply flex justify-evenly
+}
+.kalenteri td, .kalenteri thead th{
+    @apply flex-1 basis-0  justify-evenly ;
+    min-width: 150px;
+}
+.kalenteri thead, .kalenteri tbody{
+    @apply p-4 text-center rounded-md text-themeDark;
+}
+.kalenteri thead th{
+    @apply flex-1 p-4 mx-4 mb-10 shadow-lg shadow-themeDark border-2  border-themeSlate rounded-md;  
+}
+.kalenteri tbody td{
+    @apply flex-1 p-4 mx-4 mb-10 hover:scale-125 ease-in duration-200;    
+}
+.current-day{
+    @apply bg-themeDark text-white 
+}
+.current-col{
+    @apply font-extrabold text-xl scale-110 
+}
+.kalenteriLinkki{
+    @apply bg-white flex flex-col my-2 p-2 rounded-md border-2 border-themeDark   hover:bg-themeDark hover:text-white ease-in duration-200;
+}

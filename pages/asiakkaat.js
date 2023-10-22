@@ -21,8 +21,8 @@ export default function Asiakkaat() {
        <Layout>
             <h1 className="text-themeDark text-center">Tallentamasi asiakkaat</h1>
             <p className="text-center">Klikkaamalla linkkiä voit tarkastella, muokata tai poistaa tallentamasi asiakkaan.</p>
-            <div className="mb-4 p-4 overflow-y-auto">
-                <table className="w-full">
+            <div className="mb-4 p-4 overflow-y-auto ">
+                <table className="perustable w-full">
                     <thead>
                         <tr>
                             <td>Nimi:</td>
@@ -32,17 +32,15 @@ export default function Asiakkaat() {
                         </tr>
                     </thead>
                     <tbody>
-                        {asiakkaat.map(asiakas =>(
-                         
+                        {asiakkaat
+                            .sort((a, b) => a.nimi.localeCompare(b.nimi))
+                            .map(asiakas =>(
                                 <tr key={asiakas._id} onClick={() => muokkaaAsiakasta(asiakas._id)} className="cursor-pointer"> 
-
                                     <td>{asiakas.nimi}</td>     
                                     <td>{asiakas.email}</td>     
                                     <td>{asiakas.osoite}</td>    
-                                    <td>{asiakas.puhelin}</td>    
-                                    
-                                </tr>
-                           
+                                    <td>{asiakas.puhelin}</td>      
+                                </tr>   
                         ))}
                     </tbody>
                 </table>

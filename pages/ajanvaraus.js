@@ -26,36 +26,34 @@ export default function AjanvarausSivu(){
 
     return(
         <Layout>
-            <h1 className="text-center">Tallennetut ajanvaraukset</h1>
+            <h1>Tallennetut ajanvaraukset</h1>
             <p className="text-center">Täällä pystyt lisäämään ja seuraamaan varaamiasi asiakasaikoja.</p>
             <div className="mb-4 p-4 overflow-y-auto">
-                <table className="w-full">
+                <table className="perustable w-full">
                     <thead>
                         <tr>
+                            <td>PVM:</td>
                             <td>Asiakas:</td>
                             <td>Terapia:</td>
-                            <td>PVM:</td>
                             <td>KLO:</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {varaukset.map(v =>(
-                         
+                        {varaukset
+                            .sort((a,b)=>new Date(a.pvm)-new Date(b.pvm))
+                            .map(v =>(
                                 <tr key={v._id} onClick={() => muokkaaKohdetta(v._id)} className="cursor-pointer"> 
-
+                                    <td>{muokkaaPvm(v.pvm)}</td>    
                                     <td>{v.asiakas}</td>     
                                     <td>{v.terapiamuoto}</td>     
-                                    <td>{muokkaaPvm(v.pvm)}</td>    
                                     <td>{v.klo}</td>    
-                                    
                                 </tr>
-                           
                         ))}
                     </tbody>
                 </table>
             </div>
-            <div className="p-4 px-0  text-center hover:scale-90 ease-in duration-150">
-                <Link className="tallenna ml-4 align-middle" href={'/ajanvaraus/uusiaika'}>
+            <div className="flex justify-center">
+                <Link className="tallenna" href={'/ajanvaraus/uusiaika'}>  
                     Uusi ajanvaraus
                 </Link>
             </div>

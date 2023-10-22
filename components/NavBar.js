@@ -15,6 +15,7 @@ export default function NavBar() {
                 <Link href={'/asiakkaat'} className={router.pathname.includes('/asiakkaat') ? activeLink : inActiveLink}>Asiakkaat</Link>
                 <Link href={'/palvelut'} className={router.pathname.includes('/palvelut') ? activeLink : inActiveLink}>Palvelut</Link>
                 <Link href={'/ajanvaraus'} className={router.pathname.includes('/ajanvaraus') ? activeLink : inActiveLink}>Ajan varaus</Link>
+                <Link href={'/yhteenvedot'} className={router.pathname.includes('/yhteenvedot') ? activeLink : inActiveLink}>Laadi yhteenveto</Link>
             </nav>
         </aside>
     )

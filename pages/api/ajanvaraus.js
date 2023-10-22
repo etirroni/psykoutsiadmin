@@ -21,12 +21,9 @@ export default async function handler(req,res) {
 
     if (method==='POST'){
         const {asiakas,terapiamuoto,pvm,klo} = req.body
-        console.log("req.body: ", req.body)
         const varausDoc = await Varaus.create({
             asiakas,terapiamuoto,pvm,klo
-        })
-        varausDoc.pvm = varausDoc.pvm.toISOString().split("T")[0];
-        console.log("varausDoc: ", varausDoc)
+        })    
         res.json(varausDoc)
 
     }

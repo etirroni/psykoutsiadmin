@@ -14,9 +14,9 @@ export default function Layout({children}) {
     )
   }
   return (
-    <div className="bg-themeDark h-screen flex flex-col">
+    <div className="bg-themeDark min-h-screen flex flex-col">
       <NavBar/>
-      <div className="bg-white rounded-md flex-grow mt-4 mb-8 mx-8  p-4">
+      <div className="bg-white  rounded-md  mx-6 mb-6  p-6">
         {children} 
       </div>
    </div>

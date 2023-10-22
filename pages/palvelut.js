@@ -19,14 +19,15 @@ export default function Palvelut() {
     }
     return(
         <Layout>
-            <h1 className="text-themeDark text-center">Tallentamasi terapiapalvelut</h1>
+            <h1>Tallentamasi terapiapalvelut</h1>
             <p className="text-center">Painamalla linkkiä voit tarkastella tallentamaasi kohdetta tarkemmin tai poistaa sen kokonaan.</p>
             <div className="mb-4 p-4 overflow-y-auto">
-                <table className="w-full">
+                <table className="perustable w-full">
                     <thead>
                         <tr>
                             <td>Terapian nimi:</td>
                             <td>Kuvaus:</td>
+                            <td>Kela-korvattava:</td>
                             <td>Kesto:</td>
                             <td>Hinta:</td>
                         </tr>
@@ -37,7 +38,8 @@ export default function Palvelut() {
                                 <tr key={palvelu._id} onClick={() => muokkaaKohdetta(palvelu._id)} className="cursor-pointer"> 
 
                                     <td>{palvelu.terapia}</td>     
-                                    <td>{palvelu.kuvaus}</td>     
+                                    <td>{palvelu.kuvaus}</td>
+                                    <td>joo</td>     
                                     <td>{palvelu.kesto} min</td>    
                                     <td>{palvelu.hinta} €</td>    
                                     
