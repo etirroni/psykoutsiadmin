@@ -69,9 +69,9 @@ export default function ViikkoKalenteri() {
 
   return (
     <div>
-        <div className="overflow-x-auto flex flex-col p-4"> 
+        <div className="overflow-x-auto bg-themeDark rounded-md border-4 border-themeSlate flex flex-col p-4"> 
         <div>
-          <p className="text-center mb-4">Tänään on  <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{formatDate(new Date())} klo: {currentTime}<br/></span> Tässä viikon tapahtumat</p>
+          <p className="text-center text-white mb-4">Viikon tapahtumat<br/><span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{formatDate(new Date())} klo: {currentTime}</span></p>
         </div>
         <table className="kalenteri">
           <thead>

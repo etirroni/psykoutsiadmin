@@ -67,29 +67,28 @@ select:focus{
     width: 100%; 
 }
 .kalenteri tr{
-    @apply flex justify-evenly items-center p-4 
+    @apply flex justify-evenly items-center p-4;
 }
-.kalenteri td, .kalenteri thead th{
+.kalenteri td{
     min-width: 130px;
 }
 .kalenteri thead, .kalenteri tbody{
-    @apply p-4 text-center rounded-md text-themeDark;
-}
-
-.kalenteri tbody{
-    @apply bg-themeDark border-themeSlate border-4   rounded-lg;    
+    @apply p-4 text-center rounded-md;
 }
 .kalenteri thead th{
-    @apply flex-1 p-4 mx-4 mb-10 shadow-lg  shadow-themeDark border-2  border-themeSlate rounded-md;  
+    @apply flex-1 p-4 mx-4 mb-10  bg-white text-themeDark shadow-md shadow-black rounded-sm;  
+}
+.kalenteri tbody{
+    @apply bg-gray-100 ;    
 }
 .kalenteri tbody td{
     @apply flex-1 p-4 mx-4 mb-10 hover:scale-125 ease-in duration-200;    
 }
 .current-day{
-    @apply bg-themeDark text-white 
+   @apply border-themeSlate border-b-8
 }
 .current-col{
-    @apply font-extrabold text-xl scale-110 
+    @apply font-extrabold text-xl scale-125 
 }
 
 .kalenteriLinkkiAhead{
