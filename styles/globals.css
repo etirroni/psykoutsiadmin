@@ -61,21 +61,26 @@ select:focus{
 
 /* KALENTERI */
 .kalenteri{
-    @apply flex flex-col overflow-auto border-2 p-2 border-themeDark gap-10 bg-gray-200 rounded-md;
-    height: 20vw   
+    @apply   rounded-xl;
+    height: 23vw;
+    min-height: 300px;  
+    width: 100%; 
 }
 .kalenteri tr{
-    @apply flex justify-evenly
+    @apply flex justify-evenly items-center p-4 
 }
 .kalenteri td, .kalenteri thead th{
-    @apply flex-1 basis-0  justify-evenly ;
-    min-width: 150px;
+    min-width: 130px;
 }
 .kalenteri thead, .kalenteri tbody{
     @apply p-4 text-center rounded-md text-themeDark;
 }
+
+.kalenteri tbody{
+    @apply bg-themeDark border-themeSlate border-4   rounded-lg;    
+}
 .kalenteri thead th{
-    @apply flex-1 p-4 mx-4 mb-10 shadow-lg shadow-themeDark border-2  border-themeSlate rounded-md;  
+    @apply flex-1 p-4 mx-4 mb-10 shadow-lg  shadow-themeDark border-2  border-themeSlate rounded-md;  
 }
 .kalenteri tbody td{
     @apply flex-1 p-4 mx-4 mb-10 hover:scale-125 ease-in duration-200;    
@@ -86,6 +91,10 @@ select:focus{
 .current-col{
     @apply font-extrabold text-xl scale-110 
 }
-.kalenteriLinkki{
-    @apply bg-white flex flex-col my-2 p-2 rounded-md border-2 border-themeDark   hover:bg-themeDark hover:text-white ease-in duration-200;
+
+.kalenteriLinkkiAhead{
+    @apply bg-emerald-500 text-white flex flex-col my-2 p-2 rounded-md border-2  border-themeDark  overflow-clip hover:bg-themeSlate hover:text-white ease-in duration-200;
+}
+.kalenteriLinkkiBehind{
+    @apply bg-red-400 text-themeDark flex flex-col my-2 p-1  opacity-40 font-thin line-through rounded-md  border-themeDark  overflow-clip hover:bg-themeSlate hover:text-white ease-in duration-200;
 }

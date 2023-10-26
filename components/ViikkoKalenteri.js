@@ -1,24 +1,37 @@
 import axios from "axios";
 import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import ArrowBack from "./ArrowBack";
 import ArrowNext from "./ArrowNext";
+import { format } from "date-fns";
 
 export default function ViikkoKalenteri() {
   const [varaukset,setVaraukset]= useState([])
   const today = new Date();
-  const [currentWeekStartDate, setCurrentWeekStartDate] = useState(new Date(today));
+  const todayShort = format(new Date(), 'yyyy-MM-dd');
+  const [currentWeekStartDate, setCurrentWeekStartDate] = useState(today);
   const [days, setDays] = useState([]);
-  
+  const ct = format(new Date(),'HH:mm')
+  const [currentTime, setCurrentTime] =  useState(ct)
+ 
   useEffect(()=>{
     axios.get('/api/ajanvaraus').then(response=>{
       setVaraukset(response.data)
-      generateWeek(currentWeekStartDate);
     });
-
     console.log("once");
+  }, []);
+
+  useEffect(() => {
+    generateWeek(currentWeekStartDate);
+    console.log("once per minute")
+    const intervalId = setInterval(() => {
+      console.log("once per minute")
+      setCurrentTime(format(new Date(), 'HH:mm'));
+    }, 60000);
+    return () => clearInterval(intervalId);
   }, [currentWeekStartDate]);
-  
+
   function formatVpvm(paiva){
     toString(paiva)
     const formattedPVM= paiva.split('-').reverse().join('.')
@@ -32,7 +45,6 @@ export default function ViikkoKalenteri() {
       month: 'numeric', 
       day: 'numeric' });
   }
-
   function generateWeek(startDate) {
     const generatedDays = [];
     for (let i = 0; i < 7; i++) {
@@ -54,13 +66,14 @@ export default function ViikkoKalenteri() {
     lastWeekStartDate.setDate(currentWeekStartDate.getDate() - 7)
     setCurrentWeekStartDate(lastWeekStartDate)
   }
-  
+
   return (
     <div>
+        <div className="overflow-x-auto flex flex-col p-4"> 
         <div>
-          <p className="text-center mb-4">Tänään on  <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{formatDate(new Date())}</span> Tässä viikon tapahtumat</p>
+          <p className="text-center mb-4">Tänään on  <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{formatDate(new Date())} klo: {currentTime}<br/></span> Tässä viikon tapahtumat</p>
         </div>
-        <table className="kalenteri w-full">
+        <table className="kalenteri">
           <thead>
                 <tr>
                 {days.map((day, index) => (
@@ -80,7 +93,7 @@ export default function ViikkoKalenteri() {
                       .sort((a, b) => a.klo.localeCompare(b.klo))
                       .map((v) => (
                       formatVpvm(v.pvm) === day.toLocaleDateString() ? (
-                        <Link className="kalenteriLinkki" 
+                        <Link className={`${v.klo < currentTime || v.pvm < todayShort ?'kalenteriLinkkiBehind' : 'kalenteriLinkkiAhead'}`}
                               href={'/ajanvaraus/muokkaa/'+v._id}
                               key={v._id} >
                               {v.terapiamuoto} <br/> {v.klo}
@@ -92,11 +105,11 @@ export default function ViikkoKalenteri() {
               </tr>
           </tbody>
         </table>
-       <div className="flex justify-center gap-4">
-          <button onClick={lastWeek} className="vihreä"><ArrowBack/></button>
-          <button onClick={nextWeek} className="vihreä"><ArrowNext/></button>
         </div>
-        
+       <div className="flex justify-center gap-4 items-center">
+          <button onClick={lastWeek} className="vihreä">Edelliset tapahtumat<ArrowBack/></button>
+          <button onClick={nextWeek} className="vihreä"><ArrowNext/>Seuraavat tapahtumat</button>
+        </div>
     </div>
     );
   }
