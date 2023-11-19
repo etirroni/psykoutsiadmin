@@ -12,6 +12,7 @@ export default function YhteenvedotSivu(){
     const [maxPvmEhto, setMaxPvmEhto]= useState("")
     const [hakuEhdot, setHakuEhdot]= useState({})
     const [yhteenveto, setYhteenveto]=useState(varaukset)
+
     
     useEffect(()=>{
         axios.get('/api/palvelut').then(response=>{
@@ -19,13 +20,17 @@ export default function YhteenvedotSivu(){
         })
         axios.get('/api/ajanvaraus').then(response=>{
             setVaraukset(response.data)
-            setYhteenveto(response.data)
+            //setYhteenveto(response.data)
         })
         axios.get('/api/asiakkaat').then(response=>{
             setAsiakkaat(response.data)
         })
         console.log("once")
     },[])
+    useEffect(()=>{
+        hakuEhdoilla(hakuEhdot)
+        console.log("once, hakuehdot ovat: ", [hakuEhdot])
+    },[hakuEhdot])
 
   
 
@@ -47,6 +52,7 @@ export default function YhteenvedotSivu(){
         }
         /*---------------PVM------------*/ 
         if (hakuEhto.category==='Pvm'){
+         
             if(updatedHakuEhdot.hasOwnProperty(hakuEhto.categroy)){
                 updatedHakuEhdot[value]=(hakuEhto.value)
             }else{
@@ -54,7 +60,22 @@ export default function YhteenvedotSivu(){
             }
             setHakuEhdot(updatedHakuEhdot)
         }
-        
+        /*---------------ASIAKAS----------------*/
+        if (hakuEhto.category==='Asiakas'){
+            if (updatedHakuEhdot.hasOwnProperty(hakuEhto.category)){
+                if (!updatedHakuEhdot[hakuEhto.category].includes(hakuEhto.value)) {
+                    updatedHakuEhdot[hakuEhto.category].push(hakuEhto.value);
+                }else{
+                    return
+                }
+                if (hakuEhto.value===""){
+                    updatedHakuEhdot[hakuEhto.category] = [hakuEhto.value]
+                }
+            }else{
+                updatedHakuEhdot[hakuEhto.category] = [hakuEhto.value];
+            }
+            setHakuEhdot(updatedHakuEhdot)
+        }
         if (hakuEhto.category==='Delete'){
             setHakuEhdot({})
         }   
@@ -82,22 +103,32 @@ export default function YhteenvedotSivu(){
         }
       };
 
-    function hakuEhdoilla(e){
-        setAsiakasValinta(e)
-        let specificVaraus = varaukset.filter((varaus) => varaus.asiakas === e);
-        if (e===""){
-            setYhteenveto(varaukset)
+    function hakuEhdoilla(ehdot){
+        console.log("ehdot ovat tässä: ", ehdot)
+        let filteredVaraukset=varaukset
+        let aloitusPvm
+        let lopetusPvm
+        if(ehdot && ehdot.Pvm && ehdot.Pvm.length > 0){        
+                aloitusPvm=ehdot.Pvm[0][0]
+                lopetusPvm=ehdot.Pvm[0][1]      
+        } 
+        if (ehdot) {
+            console.log("IN EHDOT aloituspvm: ", aloitusPvm," lopetusPvm: ",lopetusPvm)
+            filteredVaraukset = filteredVaraukset.filter((varaus) => {
+                const asiakasFilter = !ehdot.Asiakas || ehdot.Asiakas.includes(varaus.asiakas);
+                const palveluFilter = !ehdot.Palvelu || ehdot.Palvelu.includes(varaus.terapiamuoto);
+                const pvmFilter =
+                    !aloitusPvm ||
+                    (new Date(aloitusPvm) <= new Date(varaus.pvm) &&
+                        (!lopetusPvm || new Date(lopetusPvm) >= new Date(varaus.pvm)));
+                return asiakasFilter && palveluFilter && pvmFilter;
+            });
+            setYhteenveto(filteredVaraukset);  
         }
         else{
-        if (!palveluEhto){
-                specificVaraus = varaukset.filter((varaus) => varaus.asiakas === e);
-                setYhteenveto(specificVaraus)
-            }
-        specificVaraus=specificVaraus.filter((sVaraus)=>sVaraus.terapiamuoto === palveluEhto);
-        setYhteenveto(specificVaraus)
+            setYhteenveto(varaukset)
         }
-        
-      }
+    }
 
     return(
         <Layout>
@@ -107,13 +138,13 @@ export default function YhteenvedotSivu(){
                 <div className="bg-gray-200 flex p-4 rounded-md shadow-md shadow-themeSlate">
                     <div className="flex-1">
                         <div>
-                            <p>Valitse seurattava asiakas</p>
+                            <p>Asiakas</p>
                             <select 
                                     value={asiakasValinta} 
-                                    onChange={(e) => hakuEhdoilla(e.target.value)}>
+                                    onChange={(e) => setAsiakasValinta(e.target.value)}>
                                 <option 
                                     value={""}>
-                                    Kaikki
+                                    Hae asiakkaan perusteella
                                 </option>
                                 {asiakkaat.map((asiakas) => (
                                     <option key={asiakas._id} value={asiakas.nimi}>
@@ -122,11 +153,14 @@ export default function YhteenvedotSivu(){
                                 ))
                                 }
                             </select>
+                            {asiakasValinta.length > 0 &&(
+                                <button className="vihreä" onClick={()=>muodostaHakuehdot({value:asiakasValinta, category:'Asiakas'})}>+ hakuehtoihin</button>
+                            )}
                         </div>
                         <div>
                                 <p>Palvelut</p>
                                 <select value={palveluEhto} onChange={(e) => setPalveluEhto(e.target.value)}>
-                                    <option value={""}>Kaikki</option>
+                                    <option value={""}>Hae palvelun perusteella</option>
                                     {palvelut.map((p)=>(
                                         <option key={p._id} value={p.terapia}>
                                             {p.terapia}
@@ -151,13 +185,21 @@ export default function YhteenvedotSivu(){
                                          value={maxPvmEhto}
                                          onChange={handleMaxPvmChange}
                                      /> 
-                                )}   
+                                )}  
+                                {minPvmEhto.length > 0 &&( 
                                 <button className="vihreä" 
                                         onClick={()=>muodostaHakuehdot({
-                                            value:[minPvmEhto," : ",maxPvmEhto], 
+                                            value:[minPvmEhto,maxPvmEhto], 
                                             category:"Pvm"})}>
-                                    + hakuehtoihin
+                                    + Lisää
                                 </button>
+                                )}
+                                {hakuEhdot.hasOwnProperty("Pvm") && (
+                                    <button className="vihreä">
+                                       − Poista
+                                    </button>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
@@ -196,13 +238,18 @@ export default function YhteenvedotSivu(){
                <div>
                     <h1 className="p-4 mt-4 text-themeDark">Hakuehdoilla löydetyt tulokset:</h1>
                         <div className="flex flex-col bg-gray-200 rounded-md shadow-md shadow-themeSlate">
-                            <div className="flex w-full justify-between  p-2 underline underline-offset-4">
-                                <p>Asiakas</p>
-                                <p>Tuote</p>
-                                <p>Päivämäärä</p>
-                                <p>Maksettu?</p>
-                            </div>
-                            {yhteenveto?.map(sv=>(
+                        {yhteenveto?.length > 0 ? (
+                        <div className="flex w-full justify-between p-2 underline underline-offset-4">
+                            <p>Asiakas</p>
+                            <p>Tuote</p>
+                            <p>Päivämäärä</p>
+                            <p>Maksettu?</p>
+                        </div>
+                        ) : (
+                            <p className="text-center p-8">Ei tuloksia valituilla ehdoilla.</p>
+                        )}
+                            {yhteenveto?.sort((a,b)=> new Date(b.pvm) - new Date(a.pvm))
+                            .map(sv=>(
                                 <div className="flex w-full justify-between p-4 border-t-2 border-dashed border-white hover:bg-gray-300 ease-in duration-150">
                                   <p>{sv.asiakas}</p>
                                   <p>{sv.terapiamuoto}</p>
@@ -211,6 +258,9 @@ export default function YhteenvedotSivu(){
                                 </div>
                             ))}
                         </div>
+                </div>
+                <div className="flex justify-center mt-4 p-4">
+                    <button className="vihreä">Tulosta tuloksista yhteenveto</button>
                 </div>
             </div>
         </Layout>
