@@ -39,7 +39,7 @@ export default function LomakeAsiakasTiedot({
         <div>
             
             <form onSubmit={luoAsiakas} className="flex flex-col">
-                <p>Nimi:</p>
+                <p>Asiakkaan / yrityksen nimi:</p>
                 <input  type="text" placeholder="Matti Meikäläinen" value={nimi} required onChange={ev => setNimi(ev.target.value)}/>
                 <p>Sähköposti:</p>
                 <input  type="email" placeholder="meikalainen@gmail.com" value={email} required onChange={ev => setEmail(ev.target.value)}/>

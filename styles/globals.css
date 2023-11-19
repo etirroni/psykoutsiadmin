@@ -62,8 +62,7 @@ select:focus{
 /* KALENTERI */
 .kalenteri{
     @apply   rounded-xl;
-    height: 23vw;
-    min-height: 300px;  
+    height: 100%;
     width: 100%; 
 }
 .kalenteri tr{
@@ -71,6 +70,7 @@ select:focus{
 }
 .kalenteri td{
     min-width: 130px;
+    min-height: 130px;
 }
 .kalenteri thead, .kalenteri tbody{
     @apply p-4 text-center rounded-md;
@@ -79,7 +79,7 @@ select:focus{
     @apply flex-1 p-4 mx-4 mb-10  bg-white text-themeDark shadow-md shadow-black rounded-sm;  
 }
 .kalenteri tbody{
-    @apply bg-gray-100 ;    
+    @apply bg-gray-100;    
 }
 .kalenteri tbody td{
     @apply flex-1 p-4 mx-4 mb-10 hover:scale-125 ease-in duration-200;    
@@ -96,4 +96,10 @@ select:focus{
 }
 .kalenteriLinkkiBehind{
     @apply bg-red-400 text-themeDark flex flex-col my-2 p-1  opacity-40 font-thin line-through rounded-md  border-themeDark  overflow-clip hover:bg-themeSlate hover:text-white ease-in duration-200;
+}
+.bingo{
+    @apply overflow-auto;
+    height: 100%;
+    
+  
 }

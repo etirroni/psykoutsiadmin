@@ -45,8 +45,8 @@ export default function Asiakkaat() {
                     </tbody>
                 </table>
             </div>
-            <div className="p-4 px-0  text-center hover:scale-90 ease-in duration-150">
-                <Link className="tallenna ml-4 align-middle" href={'/asiakkaat/uusiasiakas'}>
+            <div className="p-4 flex">
+                <Link className="tallenna mx-auto" href={'/asiakkaat/uusiasiakas'}>
                     Lisää uusi asiakas
                 </Link>
             </div>

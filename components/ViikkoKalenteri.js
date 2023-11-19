@@ -86,16 +86,22 @@ export default function ViikkoKalenteri() {
                 </tr>
           </thead>
           <tbody> 
-              <tr> 
+              <tr className="bingo"> 
                 {days.map((day) => (
                   <td className={` ${day.toDateString() === today.toDateString() ? 'current-col' : ''}`} key={day.toLocaleDateString()}>
                     {varaukset
                       .sort((a, b) => a.klo.localeCompare(b.klo))
-                      .map((v) => (
+                      .map((v,index) => (
                       formatVpvm(v.pvm) === day.toLocaleDateString() ? (
-                        <Link className={`${v.klo < currentTime || v.pvm < todayShort ?'kalenteriLinkkiBehind' : 'kalenteriLinkkiAhead'}`}
+                        <Link className={`${
+                          v.pvm < todayShort
+                          ? 'kalenteriLinkkiBehind'
+                          : v.pvm == todayShort && v.klo > currentTime
+                          ? 'kalenteriLinkkiAhead'
+                          : 'kalenteriLinkkiBehind'
+                      }`}  
                               href={'/ajanvaraus/muokkaa/'+v._id}
-                              key={v._id} >
+                              key={index} >
                               {v.terapiamuoto} <br/> {v.klo}
                         </Link>
                         ) : ( "" )

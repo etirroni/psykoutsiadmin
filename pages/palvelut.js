@@ -27,7 +27,6 @@ export default function Palvelut() {
                         <tr>
                             <td>Terapian nimi:</td>
                             <td>Kuvaus:</td>
-                            <td>Kela-korvattava:</td>
                             <td>Kesto:</td>
                             <td>Hinta:</td>
                         </tr>
@@ -38,8 +37,7 @@ export default function Palvelut() {
                                 <tr key={palvelu._id} onClick={() => muokkaaKohdetta(palvelu._id)} className="cursor-pointer"> 
 
                                     <td>{palvelu.terapia}</td>     
-                                    <td>{palvelu.kuvaus}</td>
-                                    <td>joo</td>     
+                                    <td>{palvelu.kuvaus}</td>   
                                     <td>{palvelu.kesto} min</td>    
                                     <td>{palvelu.hinta} €</td>    
                                     
@@ -49,8 +47,8 @@ export default function Palvelut() {
                     </tbody>
                 </table>
             </div>
-            <div className="p-4 px-0  text-center hover:scale-90 ease-in duration-150">
-                <Link className="tallenna ml-4 align-middle" href={'/palvelut/uusiterapia'}>
+            <div className="p-4 flex">
+                <Link className="tallenna mx-auto " href={'/palvelut/uusiterapia'}>
                     Lisää uusi terapia
                 </Link>
             </div>
