@@ -3,15 +3,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function YhteenvedotSivu(){
-    const [palvelut,setPalvelut]= useState([])
-    const [varaukset,setVaraukset]= useState([])
-    const [asiakkaat,setAsiakkaat]= useState([])
-    const [asiakasValinta, setAsiakasValinta]= useState("")
-    const [palveluEhto, setPalveluEhto]= useState("")
-    const [minPvmEhto, setMinPvmEhto]= useState("")
-    const [maxPvmEhto, setMaxPvmEhto]= useState("")
-    const [hakuEhdot, setHakuEhdot]= useState({})
-    const [yhteenveto, setYhteenveto]=useState(varaukset)
+    const [palvelut,setPalvelut] = useState([])
+    const [varaukset,setVaraukset] = useState([])
+    const [asiakkaat,setAsiakkaat] = useState([])
+    const [asiakasValinta, setAsiakasValinta] = useState("")
+    const [palveluEhto, setPalveluEhto] = useState("")
+    const [minPvmEhto, setMinPvmEhto] = useState("")
+    const [maxPvmEhto, setMaxPvmEhto] = useState("")
+    const [hakuEhdot, setHakuEhdot] = useState({})
+    const [yhteenveto, setYhteenveto] = useState([]) //varaukset?
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const [inputValues, setInputValues] = useState({});
+    
 
     
     useEffect(()=>{
@@ -129,6 +132,18 @@ export default function YhteenvedotSivu(){
             setYhteenveto(varaukset)
         }
     }
+    const setValittuKohde = (index) => {
+        // Your existing logic for setValittuKohde if needed
+    
+        // Toggle the visibility of the input for the specific index
+        setHoveredIndex((prevIndex) => (prevIndex === index ? null : index));
+      };
+      const handleInputChange = (index, value) => {
+        setInputValues((prevInputValues) => ({
+          ...prevInputValues,
+          [index]: value,
+        }));
+      };
 
     return(
         <Layout>
@@ -154,7 +169,7 @@ export default function YhteenvedotSivu(){
                                 }
                             </select>
                             {asiakasValinta.length > 0 &&(
-                                <button className="vihreä" onClick={()=>muodostaHakuehdot({value:asiakasValinta, category:'Asiakas'})}>+ hakuehtoihin</button>
+                                <button className="vihreä" onClick={()=>muodostaHakuehdot({value:asiakasValinta, category:'Asiakas'})}>+ Lisää</button>
                             )}
                         </div>
                         <div>
@@ -168,7 +183,7 @@ export default function YhteenvedotSivu(){
                                 ))}
                                 </select>
                                     {palveluEhto.length > 0 &&(
-                                        <button className="vihreä" onClick={()=>muodostaHakuehdot({value:palveluEhto, category:'Palvelu'})}>+ hakuehtoihin</button>
+                                        <button className="vihreä" onClick={()=>muodostaHakuehdot({value:palveluEhto, category:'Palvelu'})}>+ Lisää</button>
                                     )}
                         </div>
                         <div>
@@ -225,7 +240,7 @@ export default function YhteenvedotSivu(){
                                 </ul>
                                     <button className="vihreä" 
                                             onClick={()=>muodostaHakuehdot({value:"delete", category:'Delete'})}>
-                                            Tyhjennä ehdot
+                                            Tyhjennä ehdot ( näytä kaikki )
                                     </button>
                                 </div>
                             )}
@@ -237,27 +252,43 @@ export default function YhteenvedotSivu(){
             <div>
                <div>
                     <h1 className="p-4 mt-4 text-themeDark">Hakuehdoilla löydetyt tulokset:</h1>
-                        <div className="flex flex-col bg-gray-200 rounded-md shadow-md shadow-themeSlate">
+                    <div className="flex flex-col bg-gray-200 rounded-md shadow-md shadow-themeSlate">
                         {yhteenveto?.length > 0 ? (
-                        <div className="flex w-full justify-between p-2 underline underline-offset-4">
-                            <p>Asiakas</p>
-                            <p>Tuote</p>
-                            <p>Päivämäärä</p>
-                            <p>Maksettu?</p>
-                        </div>
-                        ) : (
-                            <p className="text-center p-8">Ei tuloksia valituilla ehdoilla.</p>
-                        )}
-                            {yhteenveto?.sort((a,b)=> new Date(b.pvm) - new Date(a.pvm))
-                            .map(sv=>(
-                                <div className="flex w-full justify-between p-4 border-t-2 border-dashed border-white hover:bg-gray-300 ease-in duration-150">
-                                  <p>{sv.asiakas}</p>
-                                  <p>{sv.terapiamuoto}</p>
-                                  <p>{sv.pvm}</p>
-                                  <p>joo / ei</p>
+                            <div className="flex w-full justify-between p-2 underline underline-offset-4">
+                                <p>Asiakas</p>
+                                <p>Tuote</p>
+                                <p>Päivämäärä</p>
+                                <p>Maksettu?</p>
+                            </div>
+                        ) : (<p className="text-center p-8">Ei tuloksia valituilla ehdoilla.</p>)
+                        }
+                        {(hakuEhdot && Object.keys(hakuEhdot).length === 0 ? varaukset : yhteenveto)
+                        ?.sort((a,b)=> new Date(b.pvm) - new Date(a.pvm))
+                            .map((sv, index)=>(
+                                <div className="flex flex-col w-full justify-between p-4 border-t-2 border-dashed border-white hover:bg-gray-300 ease-linear duration-300"
+                                     key={index}
+                                     onMouseEnter={() => setValittuKohde(index)}
+                                     onMouseLeave={() => setValittuKohde(null)}>
+                                    <div className="flex justify-between ">
+                                        <p>{sv.asiakas}</p>
+                                        <p>{sv.terapiamuoto}</p>
+                                        <p>{sv.pvm}</p>
+                                        <p>joo / ei</p>
+                                    </div>
+                                    {(hoveredIndex === index || inputValues[index]) && (
+                                        <div className=" flex content-center items-center gap-5 transition-transform ease-in-out duration-150">
+                                            <p>Huomioitavaa:</p>
+                                            <input  className="bg-transparent shadow-md w-full"  
+                                                    placeholder="Lisää tietoa yhteenvetoa varten"
+                                                    value={inputValues[index] || ''}
+                                                    onChange={(e) => handleInputChange(index, e.target.value)}/> 
+                                        </div>
+                                    )}
+                                  
                                 </div>
-                            ))}
-                        </div>
+                            ))
+                        }
+                    </div>
                 </div>
                 <div className="flex justify-center mt-4 p-4">
                     <button className="vihreä">Tulosta tuloksista yhteenveto</button>

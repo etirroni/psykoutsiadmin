@@ -22,6 +22,8 @@ input:focus{
 input::placeholder {
     color: #000; 
 }
+
+
 select{
     @apply border-4 border-transparent my-4 shadow-md shadow-themeSlate rounded-md p-4 bg-themeYellow;
     outline: none;
