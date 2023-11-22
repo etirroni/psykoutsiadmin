@@ -28,7 +28,7 @@ export default function YhteenvedotSivu(){
         axios.get('/api/asiakkaat').then(response=>{
             setAsiakkaat(response.data)
         })
-        console.log("once")
+        console.log("asiakkaat: ", asiakkaat)
     },[])
     useEffect(()=>{
         hakuEhdoilla(hakuEhdot)
@@ -251,38 +251,61 @@ export default function YhteenvedotSivu(){
             </div>
             <div>
                <div>
-                    <h1 className="p-4 mt-4 text-themeDark">Hakuehdoilla löydetyt tulokset:</h1>
-                    <div className="flex flex-col bg-gray-200 rounded-md shadow-md shadow-themeSlate">
+                    <h1 className="p-4 mt-4 text-themeDark">Yrityksen tapahtumat</h1>
+                    <div className="flex flex-col bg-gray-200 p-4 gap-5 rounded-md shadow-md shadow-themeSlate">
                         {yhteenveto?.length > 0 ? (
-                            <div className="flex w-full justify-between p-2 underline underline-offset-4">
-                                <p>Asiakas</p>
-                                <p>Tuote</p>
-                                <p>Päivämäärä</p>
-                                <p>Maksettu?</p>
-                            </div>
+                            <p className="text-center p-8">Hakuehdoilla löydetyt tulokset: </p>
                         ) : (<p className="text-center p-8">Ei tuloksia valituilla ehdoilla.</p>)
                         }
                         {(hakuEhdot && Object.keys(hakuEhdot).length === 0 ? varaukset : yhteenveto)
                         ?.sort((a,b)=> new Date(b.pvm) - new Date(a.pvm))
                             .map((sv, index)=>(
-                                <div className="flex flex-col w-full justify-between p-4 border-t-2 border-dashed border-white hover:bg-gray-300 ease-linear duration-300"
+                                <div className="flex flex-col p-4 border-2 shadow-md rounded-lg scale-95 border-themeSlate hover:bg-themeYellow hover:scale-100 ease-linear duration-300"
                                      key={index}
                                      onMouseEnter={() => setValittuKohde(index)}
                                      onMouseLeave={() => setValittuKohde(null)}>
-                                    <div className="flex justify-between ">
-                                        <p>{sv.asiakas}</p>
-                                        <p>{sv.terapiamuoto}</p>
-                                        <p>{sv.pvm}</p>
-                                        <p>joo / ei</p>
+                                    <div className="w-full">
+                                        <div className="flex w-full">
+                                            <p className="w-1/4">{sv.asiakas}</p>
+                                            <p className="w-1/4">{sv.terapiamuoto}</p>
+                                            <p className="w-1/4">{sv.pvm}</p>
+                                            <p className="w-1/4">joo / ei</p>
+                                        </div>
+                                        <div className="flex">
+                                        {sv.asiakas.length > 0 &&
+                                            asiakkaat
+                                            .filter(info => sv.asiakas.includes(info.nimi))
+                                            .map(info => (
+                                            <div key={info.id}
+                                                className="w-1/4">
+                                                <p>Email: {info.email}</p>
+                                                <p>Phone: {info.puhelin}</p>
+                                                <p>Osoite: {info.osoite}</p>
+                                            </div>
+                                            ))}
+                                        {sv.terapiamuoto.length > 0 &&
+                                            palvelut
+                                            .filter(pinfo => sv.terapiamuoto.includes(pinfo.terapia))
+                                            .map(pinfo => (
+                                            <div key={pinfo.id}
+                                                 className="w-1/4">
+                                                    <p>{pinfo.kuvaus}</p>
+                                                    <p>Kesto {pinfo.kesto} min</p>
+                                                    <p>Hinta {pinfo.hinta} €</p>
+                                            </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className=" flex  items-center gap-5 mt-2">
+                                        <p>Huomioitavaa:</p>
+                                        <textarea placeholder="Tähän voit tarvittaessa lisätä tietoa yhteenvetoa varten" className="w-full p-2 border-themeSlate border-2"/>
+                                        {/*<input  className="bg-transparent shadow-md w-full"  
+                                                placeholder="Lisää tietoa yhteenvetoa varten"
+                                                value={inputValues[index] || ''}
+                                        onChange={(e) => handleInputChange(index, e.target.value)}/> */}
                                     </div>
                                     {(hoveredIndex === index || inputValues[index]) && (
-                                        <div className=" flex content-center items-center gap-5 transition-transform ease-in-out duration-150">
-                                            <p>Huomioitavaa:</p>
-                                            <input  className="bg-transparent shadow-md w-full"  
-                                                    placeholder="Lisää tietoa yhteenvetoa varten"
-                                                    value={inputValues[index] || ''}
-                                                    onChange={(e) => handleInputChange(index, e.target.value)}/> 
-                                        </div>
+                                        <></>
                                     )}
                                   
                                 </div>
